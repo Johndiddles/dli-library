@@ -1,0 +1,32 @@
+.header {
+  background: rgb(35, 35, 35);
+  color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+
+  &__brand {
+    display: flex;
+    gap: 2em;
+    align-items: center;
+    transition: 0.2s;
+    padding: 1.2em 3em;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: 0.2s;
+    }
+  }
+
+  &__logo {
+    width: 20px;
+    transform: rotate(-30deg);
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 1.5em;
+    font-family: "Lato", sans-serif;
+  }
+}
