@@ -57,7 +57,7 @@ const SingleModuleModal = ({ module, closeModal }) => {
 
               <a
                 href={moduleData.url}
-                download
+                download={`${module.courseCode} - ${module.courseTitle}`}
                 className="singleModuleModal__content__download"
               >
                 Download
