@@ -1,33 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Module from "../module/Module.component";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAllModules,
+  getStatus,
+  getAllModules,
+  getError,
+} from "../../redux-toolkit/modulesSlice/moduleSlice";
+
+import LoadingState from "../Loader/Loader.component";
+import { toast } from "react-toastify";
+
 const AllModules = ({ levelFilter, deptFilter }) => {
-  const baseUrl = window.location.href.includes("localhost")
-    ? process.env.REACT_APP_BASE_URL_DEVELOPMENT
-    : process.env.REACT_APP_BASE_URL_PRODUCTION;
-  console.log(baseUrl);
-  console.log("levelFilter", levelFilter);
-  const [allModules, setAllModules] = useState([]);
-  const filteredModules = allModules.filter((module) => {
+  const dispatch = useDispatch();
+  const modules = useSelector(getAllModules);
+  const status = useSelector(getStatus);
+  const fetchError = useSelector(getError);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchAllModules());
+    }
+  }, [status, dispatch]);
+
+  useEffect(() => {
+    if (fetchError !== "") {
+      toast.error(fetchError);
+    }
+  });
+
+  // console.log("status: ", status);
+  // console.log("modules: ", modules);
+  // console.log("error: ", fetchError);
+
+  // console.log("levelFilter", levelFilter);
+  const filteredModules = modules.filter((module) => {
     return (
       module.level.includes(levelFilter) &&
       module.department.toLowerCase().includes(deptFilter.toLowerCase())
     );
   });
-  useEffect(() => {
-    fetch(`${baseUrl}/modules`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setAllModules(data);
-      });
-  }, [baseUrl]);
+
   return (
     <div className="homepage__modules">
-      {filteredModules &&
+      {status === "idle" || status === "pending" ? (
+        <LoadingState />
+      ) : (
+        filteredModules &&
         filteredModules
           .sort((a, b) => (a.level > b.level ? 1 : -1))
-          .map((module) => <Module key={module._id} module={module} />)}
+          .map((module) => <Module key={module._id} module={module} />)
+      )}
     </div>
   );
 };
