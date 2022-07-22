@@ -14,15 +14,23 @@ const Dashboard = () => {
 
   const addModule = (e) => {
     e.preventDefault();
-
+    const token = localStorage.token;
     axios
-      .post(`${baseUrl}/modules/add`, {
-        courseCode,
-        courseTitle,
-        level,
-        department,
-        url: urlRef.current,
-      })
+      .post(
+        `${baseUrl}/modules/add`,
+        {
+          courseCode,
+          courseTitle,
+          level,
+          department,
+          url: urlRef.current,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(function (response) {
         console.log(response);
         if (response.status === 201) {
