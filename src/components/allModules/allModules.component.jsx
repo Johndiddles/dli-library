@@ -35,7 +35,7 @@ const AllModules = ({ levelFilter, deptFilter }) => {
   // console.log("error: ", fetchError);
 
   // console.log("levelFilter", levelFilter);
-  const filteredModules = modules.filter((module) => {
+  const filteredModules = modules?.filter((module) => {
     return (
       module.level.includes(levelFilter) &&
       module.department.toLowerCase().includes(deptFilter.toLowerCase())
